@@ -56,3 +56,4 @@ Each question contains:
 3. Lexicon
 
 These categories align most closely with TelecomCopilot's goal of answering 3GPP and O-RAN related questions.
+these ca
