@@ -32,7 +32,11 @@ The primary users of the system are:
 The system will use the following sources of information:
 
 * 3GPP Release 16 and Release 18 specifications
+- Telecom rulebook
+
 * O-RAN documentation and datasets
+- Modern telecom architecture documents
+
 * TeleQnA dataset
 * Simu5G datasets
 * Telecom network logs
