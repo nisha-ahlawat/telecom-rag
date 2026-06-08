@@ -4,6 +4,8 @@
 
 TeleQnA is a telecom benchmark dataset containing 10,000 multiple-choice questions designed to evaluate telecommunications knowledge in Large Language Models (LLMs).
 
+TeleQnA serves as our benchmark and evaluation dataset. We use it to test whether our RAG system can correctly answer telecom questions using knowledge retrieved from 3GPP and O-RAN documents.
+
 ## Categories
 
 * Lexicon (500 questions)
@@ -56,4 +58,3 @@ Each question contains:
 3. Lexicon
 
 These categories align most closely with TelecomCopilot's goal of answering 3GPP and O-RAN related questions.
-these ca
