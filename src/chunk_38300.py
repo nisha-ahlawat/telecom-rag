@@ -1,6 +1,6 @@
 from pathlib import Path
 
-input_file = Path("data/processsed/38300_clean.txt") #Open the cleaned telecom document
+input_file = Path("data/processed/38300_clean.txt") #Open the cleaned telecom document
 output_dir = Path("data/chunks/38300")
 
 output_dir.mkdir(parents=True, exist_ok=True)

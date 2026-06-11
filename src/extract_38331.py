@@ -36,7 +36,7 @@ print("Paragraphs:", paragraph_count)
 clean_lines = []
 
 for line in text.splitlines():
-    line = line.strip()
+    line = " ".join(line.split())
 
     if line:
         clean_lines.append(line)

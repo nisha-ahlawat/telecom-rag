@@ -2,8 +2,8 @@ from docx import Document #This imports a library that knows how to read Microso
 from pathlib import Path
 # Input and output paths
 input_file = Path("data/raw/3GPP/38300-i90/38300-i90.docx")  #"Open this telecom specification document."
-output_file = Path("data/processsed/38300.txt")
-clean_output = Path("data/processsed/38300_clean.txt")
+output_file = Path("data/processed/38300.txt")
+clean_output = Path("data/processed/38300_clean.txt")
 
 # loads the entire 3GPP specification into memory.
 doc = Document(input_file)
@@ -15,7 +15,16 @@ for para in doc.paragraphs:
     text.append(para.text)
 
 full_text = "\n".join(text)
-clean_text = " ".join(full_text.split()) #This removes - extra spaces, tabs ,weird spacing
+
+clean_lines = []
+
+for line in full_text.splitlines():
+    line = " ".join(line.split())
+
+    if line:
+        clean_lines.append(line)
+
+clean_text = "\n".join(clean_lines)
 
 # Save extracted text
 with open(output_file, "w", encoding="utf-8") as f:

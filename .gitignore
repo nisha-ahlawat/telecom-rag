@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Telecom RAG generated files
+data/chunks/
+
+# Future vector databases
+vector_db/
+chroma_db/
+faiss_index/
+
+# Future embeddings
+embeddings/
+
+# Model downloads
+models/
