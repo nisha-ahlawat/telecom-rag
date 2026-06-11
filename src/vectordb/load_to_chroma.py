@@ -1,15 +1,6 @@
-from pathlib import Path
 from sentence_transformers import SentenceTransformer
 import chromadb
-#This code takes a telecom chunk, converts it into an embedding (vector), and stores both the text and vector inside ChromaDB.
-#
-#chunk_1.txt
-#     ↓
-#Read text
-#     ↓
-#Generate embedding
-#     ↓
-#Store in ChromaDB
+from pathlib import Path
 
 print("Loading model...")
 model = SentenceTransformer(
@@ -19,32 +10,59 @@ model = SentenceTransformer(
 print("Connecting to ChromaDB...")
 client = chromadb.Client()
 
+# Delete old test collection
+try:
+    client.delete_collection("telecom_rag")
+    print("Old collection deleted!")
+except:
+    print("No existing collection found.")
+
 collection = client.get_or_create_collection(
     name="telecom_rag"
 )
 
-chunk_file = Path(
-    "data/chunks/38300/chunk_1.txt"
-)
+print("Fresh collection created!")
 
-with open(chunk_file, "r", encoding="utf-8") as f:
-    chunk_text = f.read()
+datasets = [
+    "38300",
+    "38331",
+    "38413",
+    "oran"
+]
 
-print("Chunk loaded!")
-print("Chunk length:", len(chunk_text))
+total_chunks = 0
 
-embedding = model.encode(chunk_text)
+for dataset in datasets:
 
+    chunk_dir = Path(f"data/chunks/{dataset}")
 
-embedding = model.encode(chunk_text)
+    chunk_files = sorted(
+        chunk_dir.glob("*.txt")
+    )
 
-print("Embedding created!")
-print("Vector length:", len(embedding))
+    print(f"\nProcessing {dataset}...")
+    print(f"Chunks found: {len(chunk_files)}")
 
-collection.add(
-    documents=[chunk_text],
-    embeddings=[embedding.tolist()],
-    ids=["38300_chunk_1"]
-)
+    for chunk_file in chunk_files:
 
-print("Chunk stored in ChromaDB!")
+        with open(chunk_file, "r", encoding="utf-8") as f:
+            chunk_text = f.read()
+
+        embedding = model.encode(chunk_text)
+
+        chunk_id = f"{dataset}_{chunk_file.stem}"
+
+        collection.add(
+            documents=[chunk_text],
+            embeddings=[embedding.tolist()],
+            ids=[chunk_id],
+            metadatas=[{"source": dataset}]
+        )
+
+        total_chunks += 1
+
+        if total_chunks % 100 == 0:
+            print(f"{total_chunks} chunks processed...")
+
+print("\nEmbedding pipeline completed!")
+print("Total chunks stored:", collection.count())
