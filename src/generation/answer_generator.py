@@ -12,7 +12,6 @@
 #      ↓
 # Answer + Sources
 
-
 from sentence_transformers import SentenceTransformer
 import chromadb
 
@@ -34,41 +33,45 @@ collection = client.get_collection(
     "telecom_rag"
 )
 
-question = input(
-    "\nAsk a telecom question: "
-)
+while True:
 
-query_embedding = model.encode(
-    question
-).tolist()
-
-results = collection.query(
-    query_embeddings=[query_embedding],
-    n_results=5
-)
-
-documents = results["documents"][0]
-
-context = "\n\n".join(documents)
-
-print("\nGenerating answer...\n")
-
-answer = generate_answer(
-    context=context,
-    question=question
-)
-
-print("=" * 80)
-print("ANSWER")
-print("=" * 80)
-
-print(answer)
-
-print("\nSOURCES")
-
-for metadata in results["metadatas"][0]:
-    print(
-        f"- {metadata['chunk_id']}"
+    question = input(
+        "\nAsk a telecom question (or type 'exit'): "
     )
 
-    
+    if question.lower() in ["exit", "quit"]:
+        print("Goodbye!")
+        break
+
+    query_embedding = model.encode(
+        question
+    ).tolist()
+
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=5
+    )
+
+    documents = results["documents"][0]
+
+    context = "\n\n".join(documents)
+
+    print("\nGenerating answer...\n")
+
+    answer = generate_answer(
+        context=context,
+        question=question
+    )
+
+    print("=" * 80)
+    print("ANSWER")
+    print("=" * 80)
+
+    print(answer)
+
+    print("\nSOURCES")
+
+    for metadata in results["metadatas"][0]:
+        print(
+            f"- {metadata['chunk_id']}"
+        )
