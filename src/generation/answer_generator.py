@@ -17,6 +17,13 @@ import chromadb
 
 from llm import generate_answer
 
+DOCUMENT_NAMES = {
+    "38300": "3GPP TS 38.300",
+    "38331": "3GPP TS 38.331",
+    "38413": "3GPP TS 38.413",
+    "oran": "O-RAN Specification"
+}
+
 print("Loading embedding model...")
 
 model = SentenceTransformer(
@@ -72,6 +79,13 @@ while True:
     print("\nSOURCES")
 
     for metadata in results["metadatas"][0]:
+
+        doc_name = DOCUMENT_NAMES.get(
+            metadata["source"],
+            metadata["source"]
+        )
+
         print(
-            f"- {metadata['chunk_id']}"
+            f"- {doc_name} | "
+            f"{metadata['chunk_id']}"
         )
